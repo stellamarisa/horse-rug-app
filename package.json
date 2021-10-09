@@ -1,0 +1,34 @@
+{
+  "name": "decken.app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "compile": "coffee -c -o src/ -b modules/",
+    "watch": "coffee -c -o src/ -b -w modules/",
+    "start": "webpack serve --mode=development"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@material-ui/core": "^4.11.0",
+    "moment": "^2.29.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-indexed-db": "^1.0.12",
+    "react-scripts": "4.0.0",
+    "react-swipe-to-delete-component": "^0.5.5",
+    "web-vitals": "^0.2.4"
+  },
+  "devDependencies": {
+    "coffeescript": "^2.5.1",
+    "dotenv-webpack": "^7.0.3",
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  }
+}
