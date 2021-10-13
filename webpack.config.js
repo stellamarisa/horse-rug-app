@@ -5,12 +5,12 @@ const Dotenv = require('dotenv-webpack');
 const config = {
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/dist/',
+    path: path.resolve(__dirname),
+    publicPath: './',
     filename: 'bundle.js'
   },
   devServer: {
-    static: './dist'
+    static: './'
   },
   devtool: "source-map",
   module: {
