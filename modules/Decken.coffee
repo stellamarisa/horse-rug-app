@@ -2,8 +2,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import { useIndexedDB } from 'react-indexed-db'
 import * as _ from 'lodash'
-import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Grid, Icon, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Radio, Select, TextField, Typography } from '@material-ui/core';
-import SwipeToDelete from 'react-swipe-to-delete-component';
+import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Grid, Icon, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, MenuItem, Radio, Select, TextField, Typography } from '@material-ui/core';
 `
 
 AddNewButton = (props) ->
@@ -28,7 +27,7 @@ RugList = (props) ->
     getAll()
       .then (rugsFromDB) => setRugs(rugsFromDB) if rugs?.length != rugsFromDB?.length
 
-  deleteRug = ({ item: rug }) =>
+  deleteRug = (rug) => =>
     deleteRecord(rug.id).then => setRugs(_.reject(rugs, { id: rug.id }))
 
   colors = {
@@ -52,15 +51,18 @@ RugList = (props) ->
       {
         _.sortBy(rugs, 'filling').map (rug) => 
           [
-            <SwipeToDelete key={rug.id} item={rug} onDelete={deleteRug} deleteSwipe={0.3}>
-              <ListItem key={'rug' + rug.id}>   
-                <ListItemAvatar>
-                  <Avatar style={{ background: "radial-gradient(#{colors[rug.color]?[0]}, #{colors[rug.color]?[1]})" }}> {''} </Avatar>
-                </ListItemAvatar>
-                <ListItemText id={rug.brand} primary={rug.brand} secondary={rug.filling + 'g'} />
-              </ListItem>
-              <Divider key={'rugDiv' + rug.id} />
-            </SwipeToDelete>
+            <ListItem key={'rug' + rug.id}>   
+              <ListItemAvatar>
+                <Avatar style={{ background: "radial-gradient(#{colors[rug.color]?[0]}, #{colors[rug.color]?[1]})" }}> {''} </Avatar>
+              </ListItemAvatar>
+              <ListItemText id={rug.brand} primary={rug.brand} secondary={rug.filling + 'g'} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" onClick={deleteRug(rug)}>
+                  <Icon className="fas fa-trash" style={{ fontSize: 20 }} />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Divider key={'rugDiv' + rug.id} />
           ]
       }
     </List>
@@ -121,7 +123,7 @@ class Decken extends Component
         </DialogActions>
       </Dialog>
 
-      <RugList/>
+      <RugList />
     </Container>
 
 export default Decken

@@ -6,7 +6,6 @@ import { initDB } from 'react-indexed-db'
 import moment from 'moment'
 import 'moment/locale/de'
 
-import './style.css'
 import '@fortawesome/fontawesome-free/js/all.min.js'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 

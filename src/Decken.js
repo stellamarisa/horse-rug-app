@@ -3,8 +3,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import { useIndexedDB } from 'react-indexed-db'
 import * as _ from 'lodash'
-import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Grid, Icon, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Radio, Select, TextField, Typography } from '@material-ui/core';
-import SwipeToDelete from 'react-swipe-to-delete-component';
+import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Grid, Icon, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, MenuItem, Radio, Select, TextField, Typography } from '@material-ui/core';
 ;
 var AddNewButton, Decken, RugList;
 
@@ -38,14 +37,14 @@ RugList = function(props) {
       }
     });
   });
-  deleteRug = ({
-      item: rug
-    }) => {
-    return deleteRecord(rug.id).then(() => {
-      return setRugs(_.reject(rugs, {
-        id: rug.id
-      }));
-    });
+  deleteRug = (rug) => {
+    return () => {
+      return deleteRecord(rug.id).then(() => {
+        return setRugs(_.reject(rugs, {
+          id: rug.id
+        }));
+      });
+    };
   };
   colors = {
     deeppink: ['deeppink', 'darkred'],
@@ -67,17 +66,22 @@ RugList = function(props) {
       {_.sortBy(rugs, 'filling').map((rug) => {
       var ref, ref1;
       return [
-        <SwipeToDelete key={rug.id} item={rug} onDelete={deleteRug} deleteSwipe={0.3}>
-              <ListItem key={'rug' + rug.id}>   
-                <ListItemAvatar>
-                  <Avatar style={{
+        <ListItem key={'rug' + rug.id}>   
+              <ListItemAvatar>
+                <Avatar style={{
           background: `radial-gradient(${(ref = colors[rug.color]) != null ? ref[0] : void 0}, ${(ref1 = colors[rug.color]) != null ? ref1[1] : void 0})`
         }}> {''} </Avatar>
-                </ListItemAvatar>
-                <ListItemText id={rug.brand} primary={rug.brand} secondary={rug.filling + 'g'} />
-              </ListItem>
-              <Divider key={'rugDiv' + rug.id} />
-            </SwipeToDelete>
+              </ListItemAvatar>
+              <ListItemText id={rug.brand} primary={rug.brand} secondary={rug.filling + 'g'} />
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" onClick={deleteRug(rug)}>
+                  <Icon className="fas fa-trash" style={{
+          fontSize: 20
+        }} />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>,
+        <Divider key={'rugDiv' + rug.id} />
       ];
     })}
     </List>;

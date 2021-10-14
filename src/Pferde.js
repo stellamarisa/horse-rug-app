@@ -3,8 +3,7 @@
 import React, { Component, useState, useEffect } from 'react'
 import { useIndexedDB } from 'react-indexed-db';
 import * as _ from 'lodash';
-import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Icon, InputLabel, List, ListItem, ListItemAvatar, ListItemText, MenuItem, Select, TextField, Typography } from '@material-ui/core';
-import SwipeToDelete from 'react-swipe-to-delete-component';
+import { Avatar, Button, Container, Dialog, DialogActions, Divider, Fab, FormControl, Icon, IconButton, InputLabel, List, ListItem, ListItemAvatar, ListItemText, ListItemSecondaryAction, MenuItem, Select, TextField, Typography } from '@material-ui/core';
 ;
 var AddNewButton, HorseList, Pferde;
 
@@ -49,30 +48,35 @@ HorseList = function(props) {
       }
     });
   });
-  deleteHorse = ({
-      item: horse
-    }) => {
-    return deleteRecord(horse.id).then(() => {
-      return setHorses(_.reject(horses, {
-        id: horse.id
-      }));
-    });
+  deleteHorse = (horse) => {
+    return () => {
+      return deleteRecord(horse.id).then(() => {
+        return setHorses(_.reject(horses, {
+          id: horse.id
+        }));
+      });
+    };
   };
   if ((horses != null) && (horses != null ? horses.length : void 0) > 0) {
     return <List dense>
       {_.sortBy(horses, 'name').map((horse) => {
       return [
-        <SwipeToDelete key={horse.id} item={horse} onDelete={deleteHorse} deleteSwipe={0.3}>
-              <ListItem key={'horse' + horse.id}>   
-                <ListItemAvatar>
-                  <Avatar className="horse" src={horse.foto}>{horse.name[0]}</Avatar>
-                </ListItemAvatar>
-                <ListItemText id={horse.name} primary={horse.name} secondary={['Robust',
+        <ListItem key={'horse' + horse.id}>   
+              <ListItemAvatar>
+                <Avatar className="horse" src={horse.foto}>{horse.name[0]}</Avatar>
+              </ListItemAvatar>
+              <ListItemText id={horse.name} primary={horse.name} secondary={['Robust',
         'Empfindlich',
         'Absolute Frostbeule'][horse.sensibility - 1]} />
-              </ListItem>
-              <Divider key={'horseDiv' + horse.id} />
-            </SwipeToDelete>
+              <ListItemSecondaryAction>
+                <IconButton edge="end" aria-label="delete" onClick={deleteHorse(horse)}>
+                  <Icon className="fas fa-trash" style={{
+          fontSize: 20
+        }} />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>,
+        <Divider key={'horseDiv' + horse.id} />
       ];
     })}
     </List>;
