@@ -5,7 +5,8 @@
   "scripts": {
     "compile": "coffee -c -o src/ -b modules/",
     "watch": "coffee -c -o src/ -b -w modules/",
-    "start": "webpack serve --mode=development"
+    "start": "webpack serve --mode=development",
+    "build": "webpack --mode=production"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
